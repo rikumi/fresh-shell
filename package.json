@@ -1,10 +1,10 @@
 {
-  "name": "jsh",
+  "name": "jesh",
   "version": "1.1.0",
-  "description": "The JavaScript Shell",
+  "description": "Yet another JavaScript Shell",
   "main": "index.js",
   "bin": "index.js",
-  "repository": "https://github.com/rikumi/jsh",
+  "repository": "https://github.com/rikumi/jesh",
   "author": "rikumi",
   "license": "MIT",
   "dependencies": {
