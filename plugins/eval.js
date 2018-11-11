@@ -12,7 +12,6 @@ const expandHomeDir = require('expand-home-dir')
 const sandbox = vm.createContext(context)
 
 module.exports = (cmd, ctx, filename, callback) => {
-  let result = []
   try {
     if (!cmd.trim()) {
       for (line of prompter.lastPrompt.split('\n')) {
