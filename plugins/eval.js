@@ -21,10 +21,6 @@ module.exports = (cmd, ctx, filename, callback) => {
       return callback(null)
     }
 
-    process.stdout.moveCursor(0, -1)
-    process.stdout.clearLine(0)
-    console.log(prompter.lastPrompt.split('\n').slice(-1)[0] + config.colorizeCommand(cmd))
-
     cmd = cmd.split(';').map(cmd => {
       if (typeof context[stringArgv(cmd)[0]] === 'function') {
         cmd = cmd.split('||').map(cmd =>
@@ -56,10 +52,18 @@ module.exports = (cmd, ctx, filename, callback) => {
           ).join(' && ')
         ).join(' || ')
       }
-      let result = vm.runInContext(cmd, sandbox)
-      if (typeof result !== 'undefined') console.log(config.colorizeOutput(result))
       return cmd
     }).join('; ')
+
+    process.stdout.moveCursor(0, -1)
+    process.stdout.clearLine(0)
+    console.log(prompter.lastPrompt.split('\n').slice(-1)[0] + config.colorizeCommand(cmd))
+
+    cmd.split(';').map(cmd => {
+      let result = vm.runInContext(cmd, sandbox)
+      if (typeof result !== 'undefined') console.log(config.colorizeOutput(result))
+    })
+
     callback(null)
   } catch (e) {
     if (e.name === 'SyntaxError' && /^(Unexpected end of input|Unexpected token)/.test(e.message)) {
