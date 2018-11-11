@@ -10,5 +10,7 @@ module.exports = (returns) => {
   if (stderr.length) ret.error = stderr
   if (typeof status !== 'undefined') ret.status = status
   if (typeof signal !== 'undefined') ret.signal = signal
+
+  if (!Object.keys(ret).length) return
   return ret
 }

@@ -1,6 +1,15 @@
+#!/usr/bin/env node
+const fs = require('fs')
+const os = require('os')
+const vm = require('vm')
 const repl = require('repl')
+const path = require('path')
 const eval = require('./plugins/eval')
 const config = require('./plugins/config')
+const context = require('./plugins/context')
+
+// enable REPL prompt as a function
+require('./plugins/prompter').applyFix()
 
 // change error output into only one-line messages
 process.on('unhandledRejection', e => { throw e })
@@ -9,21 +18,16 @@ process.on('uncaughtException', e => { console.log(e.message) })
 // ignore Ctrl+C from child processes
 process.on('SIGINT', () => {})
 
-// TODO: Load custom configurations
-
-
-// Welcome MOTD
-process.stdout.write(config.welcome())
+// load custom configurations
+try {
+  vm.runInContext(fs.readFileSync(path.join(os.homedir(), '.jshrc.js')).toString(), context)
+} catch (e) {}
 
 const cli = repl.start({
-  prompt: (config._lastPrompt = config.prompt()),
+  prompt: config.prompt,
   ignoreUndefined: true,
   completer: config.complete,
-  writer: (output) => {
-    output = config.colorizeOutput(output)
-    cli.setPrompt(config._lastPrompt = config.prompt())
-    return output
-  },
+  writer: config.colorizeOutput,
   eval,
 })
 

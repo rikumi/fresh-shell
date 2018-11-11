@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "description": "The JavaScript Shell",
   "main": "index.js",
+  "bin": "index.js",
   "repository": "https://github.com/rikumi/jsh",
   "author": "rikumi",
   "license": "MIT",
   "dependencies": {
     "chalk": "^2.4.1",
+    "git-state": "^4.1.0",
     "glob": "^7.1.3",
     "is-var-name": "^2.0.0",
     "js-tokens": "^4.0.0",

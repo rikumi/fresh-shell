@@ -5,12 +5,20 @@ const config = require('./config')
 const context = require('./context')
 const validate = require('is-var-name')
 const stringArgv = require('string-argv')
+const prompter = require('./prompter')
 
 const sandbox = vm.createContext(context)
 
 module.exports = (cmd, ctx, filename, callback) => {
   let result
   try {
+    if (!cmd.trim()) {
+      for (line of prompter.lastPrompt.split('\n')) {
+        process.stdout.moveCursor(0, -1)
+        process.stdout.clearLine(0)
+      }
+      return callback(null)
+    }
     if (typeof context[stringArgv(cmd)[0]] === 'function') {
       cmd = cmd.split(/\s*\|\s*/).map((subcmd, pipeLevel) => {
         let argv = stringArgv(subcmd)
@@ -38,7 +46,7 @@ module.exports = (cmd, ctx, filename, callback) => {
 
     process.stdout.moveCursor(0, -1)
     process.stdout.clearLine(0)
-    console.log(config._lastPrompt.split('\n').slice(-1)[0] + config.colorizeCommand(cmd))
+    console.log(prompter.lastPrompt.split('\n').slice(-1)[0] + config.colorizeCommand(cmd))
     result = vm.runInContext(cmd, sandbox)
   } catch (e) {
     if (e.name === 'SyntaxError' && /^(Unexpected end of input|Unexpected token)/.test(e.message)) {
