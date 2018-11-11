@@ -1,0 +1,1 @@
+module.exports = process.exit.bind(process, 0)
