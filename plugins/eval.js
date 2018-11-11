@@ -56,7 +56,8 @@ module.exports = (cmd, ctx, filename, callback) => {
           ).join(' && ')
         ).join(' || ')
       }
-      console.log(config.colorizeOutput(vm.runInContext(cmd, sandbox)))
+      let result = config.colorizeOutput(vm.runInContext(cmd, sandbox))
+      if (typeof result !== 'undefined') console.log(result)
       return cmd
     }).join('; ')
     callback(null)
