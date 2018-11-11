@@ -39,7 +39,7 @@ const config = {
   },
   colorizeToken(token) {
     return {
-      string:     chalk.green,
+      string:     chalk.cyan,
       comment:    chalk.gray,
       regex:      chalk.cyan,
       number:     chalk.yellow,
