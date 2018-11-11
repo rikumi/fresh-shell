@@ -8,8 +8,8 @@ module.exports = (returns) => {
   stderr = stderr.split(/\r?\n/).filter((k, i, a) => k !== '' || i !== a.length - 1)
 
   if (stderr.length) ret.error = stderr
-  if (typeof status !== 'undefined') ret.status = status
-  if (typeof signal !== 'undefined') ret.signal = signal
+  if (status) ret.status = status
+  if (signal) ret.signal = signal
 
   if (!Object.keys(ret).length) return
   return ret

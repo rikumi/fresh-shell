@@ -1,11 +1,13 @@
+const fs = require('fs')
 const vm = require('vm')
 const repl = require('repl')
 const json5 = require('json5')
 const config = require('./config')
 const context = require('./context')
+const prompter = require('./prompter')
 const validate = require('is-var-name')
 const stringArgv = require('string-argv')
-const prompter = require('./prompter')
+const expandHomeDir = require('expand-home-dir')
 
 const sandbox = vm.createContext(context)
 
@@ -23,13 +25,15 @@ module.exports = (cmd, ctx, filename, callback) => {
       cmd = cmd.split(/\s*\|\s*/).map((subcmd, pipeLevel) => {
         let argv = stringArgv(subcmd)
         let arglist = argv.slice(1).map(arg => {
-          try {
-            arg = json5.parse(arg)
-          } catch (e) { }
+          try { arg = json5.parse(arg) } catch (e) {}
 
-          if (typeof context[arg] !== 'undefined' && validate(arg)) {
+          if (typeof context[arg] === 'string' && validate(arg)) {
             return arg
           } else {
+            try {
+              let file = expandHomeDir(arg)
+              if (fs.existsSync(file)) arg = file
+            } catch (e) {}
             return json5.stringify(arg)
           }
         })

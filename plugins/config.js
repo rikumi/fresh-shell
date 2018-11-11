@@ -1,4 +1,3 @@
-const os = require('os')
 const util = require('util')
 const path = require('path')
 const chalk = require('chalk')
@@ -7,6 +6,7 @@ const moment = require('moment')
 const tokens = require('js-tokens')
 const stringArgv = require('string-argv')
 const pathComplete = require('lib-pathcomplete')
+const expandHomeDir = require('expand-home-dir')
 
 const config = {
   env: [
@@ -32,8 +32,8 @@ const config = {
     return chalk.blue('\n' + config.cwd() + chalk.gray(config.git()) + ' ❯ ')
   },
   complete(line, callback) {
-    let last = /\s$/.test(line) ? '' : (stringArgv(line).slice(-1)[0] || '')
-    pathComplete(last.replace(/^~/, os.homedir()), (err, data) => {
+    let last = expandHomeDir(/\s$/.test(line) ? '' : (stringArgv(line).slice(-1)[0] || ''))
+    pathComplete(last, (err, data) => {
       callback(err, [data, path.basename(last)])
     })
   },

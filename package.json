@@ -9,6 +9,7 @@
   "license": "MIT",
   "dependencies": {
     "chalk": "^2.4.1",
+    "expand-home-dir": "^0.0.3",
     "git-state": "^4.1.0",
     "is-var-name": "^2.0.0",
     "js-tokens": "^4.0.0",
