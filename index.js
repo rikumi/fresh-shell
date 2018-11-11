@@ -27,7 +27,6 @@ const cli = repl.start({
   prompt: config.prompt,
   ignoreUndefined: true,
   completer: config.complete,
-  writer: config.colorizeOutput,
   eval,
 })
 

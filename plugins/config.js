@@ -1,10 +1,11 @@
+const fs = require('fs')
 const util = require('util')
 const path = require('path')
 const chalk = require('chalk')
 const git = require('git-state')
 const moment = require('moment')
 const tokens = require('js-tokens')
-const stringArgv = require('string-argv')
+const stringArgv = require('./string-argv')
 const pathComplete = require('lib-pathcomplete')
 const expandHomeDir = require('expand-home-dir')
 
@@ -32,14 +33,17 @@ const config = {
     return chalk.blue('\n' + config.cwd() + chalk.gray(config.git()) + ' ❯ ')
   },
   complete(line, callback) {
-    let last = expandHomeDir(/\s$/.test(line) ? '' : (stringArgv(line).slice(-1)[0] || ''))
-    pathComplete(last, (err, data) => {
-      callback(err, [data, path.basename(last)])
+    let last = expandHomeDir(/[^\\]\s$/.test(line) ? '' : (stringArgv(line).slice(-1)[0] || ''))
+    pathComplete(last, (err, data, info) => {
+      callback(err, [data.map(file => {
+        if (fs.statSync(path.join(info.dir, file)).isDirectory()) file += '/'
+        return file.replace(/ /g, '\\ ')
+      }), path.basename(last).replace(/ /g, '\\ ')])
     })
   },
   colorizeToken(token) {
     return {
-      string:     chalk.cyan,
+      string:     chalk.green,
       comment:    chalk.gray,
       regex:      chalk.cyan,
       number:     chalk.yellow,
