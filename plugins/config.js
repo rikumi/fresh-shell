@@ -1,12 +1,12 @@
-const fs = require('fs')
+const os = require('os')
 const util = require('util')
-const glob = require('glob')
 const path = require('path')
 const chalk = require('chalk')
 const git = require('git-state')
 const moment = require('moment')
 const tokens = require('js-tokens')
 const stringArgv = require('string-argv')
+const pathComplete = require('lib-pathcomplete')
 
 const config = {
   env: [
@@ -31,14 +31,11 @@ const config = {
   prompt() {
     return chalk.blue('\n' + config.cwd() + chalk.gray(config.git()) + ' ❯ ')
   },
-  complete(line) {
-    let last = stringArgv(line).slice(-1)[0] || ''
-    let pattern = path.join(process.cwd(), last.replace(/(\/|$)/g, '*$1'))
-    let hits = glob.sync(pattern)
-    hits = hits.map(hit => {
-      return path.basename(hit) + (fs.statSync(hit).isDirectory() ? '/' : '')
+  complete(line, callback) {
+    let last = /\s$/.test(line) ? '' : (stringArgv(line).slice(-1)[0] || '')
+    pathComplete(last.replace(/^~/, os.homedir()), (err, data) => {
+      callback(err, [data, path.basename(last)])
     })
-    return [hits, path.basename(last)]
   },
   colorizeToken(token) {
     return {
