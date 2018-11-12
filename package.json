@@ -1,12 +1,15 @@
 {
   "name": "jesh",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "Yet another JavaScript Shell",
   "main": "index.js",
   "bin": "index.js",
   "repository": "https://github.com/rikumi/jesh",
   "author": "rikumi",
   "license": "MIT",
+  "script": {
+    "install": "echo '\\$PATH=\\'$PATH\\'' >> ~/.jeshrc.js"
+  },
   "dependencies": {
     "chalk": "^2.4.1",
     "expand-home-dir": "^0.0.3",

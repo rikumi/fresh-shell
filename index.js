@@ -20,7 +20,7 @@ process.on('SIGINT', () => {})
 
 // load custom configurations
 try {
-  vm.runInContext(fs.readFileSync(path.join(os.homedir(), '.jshrc.js')).toString(), context)
+  vm.runInContext(fs.readFileSync(path.join(os.homedir(), '.jeshrc.js')).toString(), context)
 } catch (e) {}
 
 const cli = repl.start({
