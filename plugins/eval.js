@@ -66,10 +66,7 @@ module.exports = (cmd, ctx, filename, callback) => {
 
     callback(null)
   } catch (e) {
-    if (e.name === 'SyntaxError' && /^(Unexpected end of input|Unexpected token)/.test(e.message)) {
-      return callback(new repl.Recoverable(e))
-    } else {
-      console.error(e.message)
-    }
+    console.error(e.message)
+    callback(null)
   }
 }
