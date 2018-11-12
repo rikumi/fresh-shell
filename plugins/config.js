@@ -5,7 +5,7 @@ const chalk = require('chalk')
 const git = require('git-state')
 const moment = require('moment')
 const tokens = require('js-tokens')
-const stringArgv = require('./string-argv')
+const stringArgv = require('string-to-argv')
 const pathComplete = require('lib-pathcomplete')
 const expandHomeDir = require('expand-home-dir')
 

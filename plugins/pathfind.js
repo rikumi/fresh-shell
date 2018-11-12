@@ -2,6 +2,9 @@ const fs = require('fs')
 const path = require('path')
 
 module.exports = (key) => {
+  if (/\/\//.test(key)) {
+    return
+  }
   for (let dir of process.env.PATH.split(':').concat([
     '/bin', '/usr/bin', '/usr/local/bin'
   ])) {

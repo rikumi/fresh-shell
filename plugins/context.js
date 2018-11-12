@@ -1,12 +1,14 @@
+const importCwd = require('import-cwd')
 const config = require('./config')
 const exec = require('./exec')
 const exit = require('./exit')
 
-const context = new Proxy({
+const context = new Proxy(Object.assign(global, {
+  require: importCwd,
   config,
   exec: (file, ...args) => exec(file) && exec(file)(...args),
   exit
-}, {
+}), {
   get(target, key) {
     if (typeof key === 'string' && /^\$/.test(key)) {
       return process.env[key.slice(1)]

@@ -8,7 +8,14 @@ module.exports = (returns) => {
   stderr = stderr.split(/\r?\n/).filter((k, i, a) => k !== '' || i !== a.length - 1)
 
   if (stderr.length) ret.error = stderr
-  if (typeof status !== 'undefined') ret.status = status
   if (signal) ret.signal = signal
+  
+  ret.status = status || 0
+
+  Object.defineProperty(ret, 'success', {
+    get: _ => !ret.status,
+    enumerable: false
+  })
+  
   return ret
 }
