@@ -47,7 +47,7 @@ const config = {
       comment:    chalk.gray,
       regex:      chalk.cyan,
       number:     chalk.yellow,
-      name:       chalk.reset,
+      name:       token.value === 'null' || token.value === 'undefined' ? chalk.gray : chalk.reset,
       punctuator: chalk.gray,
       whitespace: chalk.reset,
       invalid:    chalk.red,
@@ -64,8 +64,9 @@ const config = {
     }
     return result
   },
-  colorizeCommand(command) {
-    return config.colorizeCode(command.trim()) + chalk.gray(' - ' + moment().format('H:mm:ss'))
+  colorizeCommand(command, error, ended = true) {
+    return config.colorizeCode(command.trim()) + 
+      (ended ? chalk.gray(' - ' + (error && error.message || moment().format('H:mm:ss'))) : '')
   },
   colorizeOutput(output) {
     return config.colorizeCode(util.inspect(output))

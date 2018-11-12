@@ -2,9 +2,9 @@ const config = require('./config')
 const exec = require('./exec')
 const exit = require('./exit')
 
-module.exports = new Proxy({
+const context = new Proxy({
   config,
-  exec,
+  exec: (file, ...args) => exec(file) && exec(file)(...args),
   exit
 }, {
   get(target, key) {
@@ -34,3 +34,6 @@ module.exports = new Proxy({
     return true
   }
 })
+
+context.global = context
+module.exports = context

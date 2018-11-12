@@ -23,12 +23,18 @@ const applyFix = () => {
     return ret
   }
 
+  const _setPrompt = rl.Interface.prototype.setPrompt
+  rl.Interface.prototype.setPrompt = function(prompt, ...args) {
+    _setPrompt.call(this, prompt, ...args)
+    lastPrompt = prompt
+  }
+
   const _prompt = rl.Interface.prototype.prompt
-  rl.Interface.prototype.prompt = function () {
-    if (this._prompter) {
+  rl.Interface.prototype.prompt = function (...args) {
+    if (this._prompter && lastPrompt !== '... ') {
       this.setPrompt(lastPrompt = this._prompter())
     }
-    return _prompt.call(this)
+    return _prompt.call(this, ...args)
   }
 }
 
