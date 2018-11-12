@@ -7,7 +7,7 @@
   "repository": "https://github.com/rikumi/jesh",
   "author": "rikumi",
   "license": "MIT",
-  "script": {
+  "scripts": {
     "install": "echo '\\$PATH=\\'$PATH\\'' >> ~/.jeshrc.js"
   },
   "dependencies": {
