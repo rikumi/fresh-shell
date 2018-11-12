@@ -47,6 +47,8 @@ module.exports = (cmd, ctx, filename, callback) => {
             cmd = cmd.trim().replace(/\n/g, ' ').split(/\s*\|\s*/).map((cmd, pipeLevel) => {
               let argv = stringArgv(cmd)
               if (pathfind(argv[0]) && !validateIdentifier(argv[0])) {
+                // protect the file from being identified as js keyword (such as 'true')
+                argv[0] = json5.stringify(argv[0])
                 argv.unshift('exec')
               }
 
