@@ -24,12 +24,9 @@ try {
 } catch (e) {}
 
 const cli = repl.start({
-  prompt: config.prompt,
+  prompt: () => config.prompt(),
   completer: config.complete,
-  eval,
+  eval
 })
 
-require('repl-history')(cli, {
-  useHome: true,
-  maxSave: 0
-})
+require('repl.history')(cli, path.join(os.homedir(), '.jesh_history'));

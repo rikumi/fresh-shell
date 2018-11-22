@@ -1,6 +1,6 @@
 {
   "name": "jesh",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "The fully customizable JavaScript shell, for everyday use.",
   "main": "index.js",
   "bin": "index.js",
