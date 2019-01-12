@@ -3,7 +3,9 @@
   "version": "2.0.0",
   "description": "The fully customizable JavaScript shell, for everyday use.",
   "main": "index.js",
-  "bin": "index.js",
+  "bin": {
+    "fresh": "index.js"
+  },
   "repository": "https://github.com/rikumi/fresh-shell",
   "author": "rikumi",
   "license": "MIT",
