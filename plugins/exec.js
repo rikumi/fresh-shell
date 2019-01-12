@@ -25,7 +25,7 @@ module.exports = (command, ...interpolations) => {
         (typeof interpolations[0] === 'string' || typeof interpolations[0] === 'function')) {
     
         define[command] = interpolations[0];
-        return;
+        return '';
     }
 
     if (!command.trim()) {
@@ -51,7 +51,7 @@ module.exports = (command, ...interpolations) => {
                 process.exit();
             } else if (file === 'cd') {
                 process.chdir(expand(args[0]));
-                return;
+                return '';
             }
 
             try {
