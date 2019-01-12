@@ -51,6 +51,7 @@ module.exports = (command, ...interpolations) => {
                 process.exit();
             } else if (file === 'cd') {
                 process.chdir(expand(args[0]));
+                return;
             }
 
             try {
