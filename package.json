@@ -1,16 +1,17 @@
 {
-  "name": "jesh",
-  "version": "1.3.4",
+  "name": "fresh-shell",
+  "version": "2.0.0",
   "description": "The fully customizable JavaScript shell, for everyday use.",
   "main": "index.js",
   "bin": "index.js",
-  "repository": "https://github.com/rikumi/jesh",
+  "repository": "https://github.com/rikumi/fresh-shell",
   "author": "rikumi",
   "license": "MIT",
   "scripts": {
-    "install": "echo \"\\$PATH='$PATH'\" >> ~/.jeshrc.js"
+    "install": "node plugins/init.js"
   },
   "dependencies": {
+    "bluebird": "^3.5.3",
     "chalk": "^2.4.1",
     "expand-home-dir": "^0.0.3",
     "git-state": "^4.1.0",
@@ -19,6 +20,7 @@
     "js-tokens": "^4.0.0",
     "json5": "^2.1.0",
     "lib-pathcomplete": "^0.0.1",
+    "list-git-branches": "^1.0.0",
     "moment": "^2.22.2",
     "repl.history": "^0.1.4",
     "shelljs": "^0.8.2",
