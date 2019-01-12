@@ -3,6 +3,9 @@
 
 ![](https://user-images.githubusercontent.com/5051300/51076431-3c793e00-16d3-11e9-85b9-3b82c1a72012.png)
 
+## How to input ƒ
+Use `option+F`.
+
 ## Features
 1. I made the function ƒ that receives bash commands as string templates, and choose to execute them in the foreground or background according to context.
 2. The beginning two characters ƒ-backtick are initially positioned there, and can be changed; The final backtick is auto-completed. This makes it no hard than using a bash.
