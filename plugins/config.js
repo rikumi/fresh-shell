@@ -49,7 +49,8 @@ const config = {
                     if (fs.statSync(path.join(info.dir, file)).isDirectory()) file += '/';
                     return file.replace(/ /g, '\\ ');
                 });
-                let branches = last ? branch.sync('.').filter(k => k.indexOf(/[^\/]*$/.exec(last)[0]) === 0) : [];
+                let branches = last && git.isGitSync(process.cwd()) ?
+                    branch.sync('.').filter(k => k.indexOf(/[^\/]*$/.exec(last)[0]) === 0) : [];
                 callback(null, [
                     paths.concat(branches).filter((k, i, a) => a.indexOf(k) === i),
                     path.basename(last).replace(/ /g, '\\ ') + (/\/$/.test(last) ? '/' : '')
