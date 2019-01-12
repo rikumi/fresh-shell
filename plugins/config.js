@@ -43,23 +43,23 @@ const config = {
         last = stringArgv(last).slice(-1)[0] || '';
         last = expandHomeDir(last);
 
-        try {
-            pathComplete(last, (err, data, info) => {
-                let paths = data.map((file) => {
+        pathComplete(last, (err, data, info) => {
+            try {
+                if (err) throw err;
+                let paths = (data || []).map((file) => {
                     if (fs.statSync(path.join(info.dir, file)).isDirectory()) file += '/';
                     return file.replace(/ /g, '\\ ');
                 });
-                let branches = last && git.isGitSync(process.cwd()) ?
-                    branch.sync('.').filter(k => k.indexOf(/[^\/]*$/.exec(last)[0]) === 0) : [];
+                let branches = /[^\/]+$/.test(last) && ~line.indexOf('git ') && git.isGitSync(process.cwd()) ?
+                    branch.sync('.').filter((k) => k.indexOf(/[^\/]+$/.exec(last)[0]) === 0) : [];
                 callback(null, [
                     paths.concat(branches).filter((k, i, a) => a.indexOf(k) === i),
                     path.basename(last).replace(/ /g, '\\ ') + (/\/$/.test(last) ? '/' : '')
                 ]);
-            })
-        } catch (e) {
-            console.log(e);
-            callback(e);
-        }
+            } catch (e) {
+                callback(null, []);
+            }
+        })
     },
     colorizeToken(token) {
         return {
