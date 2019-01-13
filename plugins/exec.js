@@ -72,7 +72,7 @@ module.exports = (command, ...interpolations) => {
                 let { stdout, stderr } = returns;
                 result = [stdout, stderr]
                     .filter((k) => k)
-                    .map((k) => k.toString())
+                    .map((k) => k.toString().replace(/\n$/, '')) // Trim the ending newline
                     .filter((k) => k.trim())
                     .join('\n\nError: ');
             } finally {
