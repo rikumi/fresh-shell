@@ -57,7 +57,7 @@ const config = {
                     path.basename(last).replace(/ /g, '\\ ') + (/\/$/.test(last) ? '/' : '')
                 ]);
             } catch (e) {
-                callback(null, []);
+                callback(null, [[]]);
             }
         })
     },
