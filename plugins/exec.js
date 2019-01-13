@@ -45,27 +45,22 @@ module.exports = (command, ...interpolations) => {
     let isExecuted = false;
     let result = null;
 
-    let getter = (interactive = true) => {
+    let executor = (interactive = true) => {
         if (!isExecuted) {
             if (file === 'exit') {
                 process.exit();
             } else if (file === 'cd') {
-                process.chdir(expand(args[0]));
+                args[0] && process.chdir(expand(args[0]));
                 return '';
             }
 
             try {
-                setTitle('ƒ > ' + file);
+                setTitle('ƒ > ' + file + (args.length ? '…' : ''));
                 process.stdin.setRawMode(false);
-                if (!interactive) {
-                    process.stdout.write(chalk.gray('[Executing]', command, '…'))
-                }
 
-                // With shell set to true, it is more compatible with some bash syntax
-                // And path finding is transparently supported
-                // But args passed to shell should be escaped
-                let returns = cp.spawnSync(file, args.map(arg => JSON.stringify(expand(arg))), {
-                    shell: true,
+                // Use sh to execute the command
+                // 
+                let returns = cp.spawnSync('sh', ['-c', command], {
                     stdio: [
                         'inherit',
                         interactive ? 'inherit' : 'pipe',
@@ -80,27 +75,27 @@ module.exports = (command, ...interpolations) => {
                     .map((k) => k.toString())
                     .filter((k) => k.trim())
                     .join('\n\nError: ');
-                isExecuted = true;
             } finally {
                 if (!interactive) {
                     process.stdout.clearLine(0);
                 }
                 process.stdin.setRawMode(true);
+                isExecuted = true;
                 setTitle('ƒ');
             }
         }
         return result;
     };
 
-    getter.FRESH_EXECUTABLE = true;
-    getter.toString = getter.bind(null, false);
+    executor.FRESH_EXECUTABLE = true;
+    executor.toString = executor.bind(null, false);
 
-    return new Proxy(getter, {
+    return new Proxy(executor, {
         get(target, key, value) {
-            if (key in getter && key !== 'length') {
-                return getter[key];
+            if (key in executor && key !== 'length') {
+                return executor[key];
             } else {
-                return getter.toString()[key];
+                return executor.toString()[key];
             }
         }
     });
