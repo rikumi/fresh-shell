@@ -27,7 +27,7 @@ const config = {
         return str;
     },
     cwd() {
-        return path.basename(process.cwd());
+        return path.basename(process.cwd()) || '/';
     },
     prompt() {
         return '\n' + chalk.blue(config.cwd() + chalk.gray(config.git()) + ' ');
