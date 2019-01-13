@@ -18,7 +18,7 @@ module.exports = (command, ...interpolations) => {
         command = command.map((k, i) => k + (interpolations[i] || '')).join('');
     }
     
-    // define a command: ƒ('command', 'alias') or ƒ('command', () => { /**/ })
+    // To define a command: ƒ('command', 'alias') or ƒ('command', () => { /**/ })
     else if (interpolations.length === 1 &&
         argv(command).length === 1 &&
         interpolations[0] &&
@@ -28,7 +28,10 @@ module.exports = (command, ...interpolations) => {
         return '';
     }
 
-    if (!command.trim()) {
+    // New lines are treated as spaces
+    command = command.replace(/\n/g, ' ').trim();
+
+    if (!command) {
         return '';
     }
 
