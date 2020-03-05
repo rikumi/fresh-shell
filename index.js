@@ -19,8 +19,8 @@ try {
     vm.runInContext(fs.readFileSync(path.join(os.homedir(), '.freshrc.js')).toString(), context);
 } catch (e) { }
 
-new Repl({
-    hardPrompt: () => config.prompt(exec.lastStatus),
+const repl = new Repl({
+    hardPrompt: config.prompt,
     softPrompt: 'ƒ`',
     transformer: (text) => /ƒ`([^`]|\\[.])+$/.test(text) ? text + '`' : text,
     formatter: config.colorizeCommand,
@@ -29,7 +29,9 @@ new Repl({
         sandbox.ƒ = exec.bind(null, isInteractive);
         try {
             let result = vm.runInContext(cmd, sandbox);
-            if (!isInteractive) {
+            if (isInteractive) {
+                repl.hardPrompt = config.prompt.bind(null, result.status);
+            } else {
                 console.log('>', config.colorizeOutput(result));
             }
         } catch (e) {

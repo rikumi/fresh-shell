@@ -29,7 +29,7 @@ const config = {
     cwd() {
         return path.basename(process.cwd()) || '/';
     },
-    prompt(status) {
+    prompt(status = 0) {
         return (status ? chalk.red : chalk.blue)(config.cwd() + chalk.gray(config.git()) + ' ');
     },
     async complete(line, callback) {
