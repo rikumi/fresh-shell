@@ -3,7 +3,7 @@
 
 ![](https://user-images.githubusercontent.com/5051300/51085784-09898580-1779-11e9-9917-a6dea80a5303.png)
 
-## How to input ƒ
+## How to type ƒ
 Use `option+F`.
 
 ## Features
