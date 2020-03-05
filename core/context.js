@@ -1,19 +1,15 @@
 const importCwd = require('import-cwd');
 const config = require('./config');
-const ƒ = require('./exec');
+const exec = require('./exec');
 
 const context = new Proxy(
     Object.assign(global, {
         require: Object.assign(require, importCwd),
         config,
-        ƒ
+        ƒ: exec.bind(null, true),
     }),
     {
         get(target, key) {
-            if (typeof key === 'string' && /^\$/.test(key)) {
-                return process.env[key.slice(1)];
-            }
-
             if (key in target) {
                 return target[key];
             }
@@ -29,11 +25,6 @@ const context = new Proxy(
             return result;
         },
         set(target, key, value) {
-            if (typeof key === 'string' && /^\$/.test(key)) {
-                process.env[key.slice(1)] = value;
-                return true;
-            }
-
             target[key] = value;
             return true;
         }

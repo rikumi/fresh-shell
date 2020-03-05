@@ -14,4 +14,4 @@ Use `option+F`.
     ƒ`vim`.length
     ```
     and then use your mind and keyboard to quit it.
-4. Fully customizable. If it's not fully enough, edit the code and don't be worried about not understanding bash syntaxes.
+4. Fully customizable. If it's not full enough, edit the code and don't be worried about not understanding bash syntaxes.

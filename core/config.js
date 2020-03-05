@@ -7,7 +7,7 @@ const tokens = require('js-tokens');
 const chalk = require('chalk').default;
 
 const expandHomeDir = require('expand-home-dir');
-const stringArgv = require('string-to-argv').default;
+const { parse } = require('shell-quote');
 
 const git = require('git-state');
 const branch = require('list-git-branches');
@@ -29,8 +29,8 @@ const config = {
     cwd() {
         return path.basename(process.cwd()) || '/';
     },
-    prompt() {
-        return '\n' + chalk.blue(config.cwd() + chalk.gray(config.git()) + ' ');
+    prompt(status) {
+        return (status ? chalk.red : chalk.blue)(config.cwd() + chalk.gray(config.git()) + ' ');
     },
     async complete(line, callback) {
         let last = line;
@@ -40,7 +40,7 @@ const config = {
         if (/`/.test(last)) {
             last = /[^`]*$/.exec(last)[0];
         }
-        last = stringArgv(last).slice(-1)[0] || '';
+        last = parse(last, process.env).slice(-1)[0] || '';
         last = expandHomeDir(last);
 
         pathComplete(last, (err, data, info) => {
@@ -85,7 +85,8 @@ const config = {
         return result;
     },
     colorizeCommand(command, error, ended = true) {
-        return config.colorizeCode(command.trim()) + (ended ? chalk.gray(' - ' + ((error && error.message) || moment().format('H:mm:ss'))) : '');
+        return config.colorizeCode(command.trim()) +
+            (ended ? chalk.gray(' - ' + (error && error.stack.split(/\s*\n\s*/).slice(0, 2).join(' - ') || moment().format('H:mm:ss'))) : '');
     },
     colorizeOutput(output) {
         return config.colorizeCode(util.inspect(output));
