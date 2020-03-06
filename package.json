@@ -1,6 +1,6 @@
 {
   "name": "fresh-shell",
-  "version": "3.0.6",
+  "version": "3.0.7",
   "description": "The fully customizable JavaScript shell, for everyday use.",
   "main": "index.js",
   "bin": {
