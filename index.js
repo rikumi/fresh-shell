@@ -22,7 +22,13 @@ try {
 const repl = new Repl({
     hardPrompt: config.prompt,
     softPrompt: 'ƒ`',
-    transformer: (text) => /ƒ`([^`]|\\[.])+$/.test(text) ? text + '`' : text,
+    transformer: (text) => {
+        if (/ƒ`([^`]|\\[.])+$/.test(text)) {
+            text += '`';
+        }
+        text = text.replace(/\\ /g, '\\\\ ');
+        return text;
+    },
     formatter: config.colorizeCommand,
     executor: (cmd) => {
         const isInteractive = /^ƒ`([^`]|\\[.])+`$/.test(cmd);
