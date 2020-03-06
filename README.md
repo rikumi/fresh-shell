@@ -130,7 +130,7 @@ config.prompt = (status = 0) => {
 
 效果如下：
 
-![image](https://user-images.githubusercontent.com/5051300/76065372-83588000-5fc6-11ea-9fb4-d510a5d2e64f.png)
+![image](https://user-images.githubusercontent.com/5051300/76068492-35df1180-5fcc-11ea-9720-e9209b4f86f0.png)
 
 ### 定制 Tab 自动完成
 
