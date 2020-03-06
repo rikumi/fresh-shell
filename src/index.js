@@ -1,3 +1,4 @@
+#!/usr/local/bin/node
 const vm = require('vm');
 const fs = require('fs');
 const os = require('os');
