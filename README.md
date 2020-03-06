@@ -15,3 +15,28 @@ Use `option+F`.
     ```
     and then use your mind and keyboard to quit it.
 4. Fully customizable. If it's not full enough, edit the code and don't be worried about not understanding bash syntaxes.
+
+## Powerline config
+
+~/.freshrc.js：
+
+```js
+const chalk = require('chalk').default;
+
+config.prompt = (status = 0) => {
+    const bgColor = status ? chalk.bgRed : chalk.bgBlue;
+    const fgColor = status ? chalk.red : chalk.blue;
+    const bgBlack = chalk.bgBlack;
+    const fgBlack = chalk.black;
+    const fgWhite = chalk.white;
+    const git = config.git();
+    if (git) {
+        return bgColor(' ' + fgBlack(config.cwd()) + ' ') +
+            bgBlack(fgColor('') + fgWhite(config.git()) + ' ') +
+            fgBlack('') + ' ';
+    } else {
+        return bgColor(' ' + fgBlack(config.cwd()) + ' ') +
+            fgColor('') + ' ';
+    }
+}
+```
