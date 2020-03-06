@@ -1,6 +1,7 @@
 const cp = require('child_process');
 const expand = require('expand-home-dir');
 const { parse } = require('shell-quote');
+const config = require('./config');
 
 const setTitle = (title) => {
     process.stdout.write(
@@ -50,7 +51,7 @@ const exec = (interactive, command, ...interpolations) => {
             stdout,
             stderr,
             error = null
-        } = cp.spawnSync('sh', ['-c', command], {
+        } = cp.spawnSync(config.shell, [...config.shellArgs, '-c', command], {
             stdio: [
                 'inherit',
                 interactive ? 'inherit' : 'pipe',

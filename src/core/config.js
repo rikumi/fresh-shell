@@ -14,6 +14,8 @@ const branch = require('list-git-branches');
 const pathComplete = require('lib-pathcomplete');
 
 const config = {
+    shell: '/bin/zsh',
+    shellArgs: ['--login'],
     env: [require],
     git() {
         let cwd = process.cwd();
