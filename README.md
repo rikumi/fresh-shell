@@ -85,6 +85,10 @@ Fresh 支持使用配置文件进行自定义，实现嵌套 Shell 和配置继�
 
 配置文件中可以对全局配置对象 `config` 进行修改。预设的 config 对象参见[这里](https://github.com/rikumi/fresh-shell/blob/master/src/core/config.js)。
 
+### 定制动词
+
+修改 `config.verb`，可以将默认的动词 ƒ 修改成其他**合法的 JavaScript 标识符**。
+
 ### 嵌套 Shell 与配置继承
 
 Fresh 可以使用 Bash、Zsh、Fish、Xonsh 等任何支持 `-c` 参数的第三方 Shell 作为内嵌 Shell 工具，只需在配置文件中更改 `config.shell` 即可：
@@ -135,6 +139,10 @@ Fresh 默认配置中提供了路径自动完成和 Git 分支自动完成；你
 ### 定制语法高亮
 
 为了方便自定义，默认配置对象中将语法高亮分为四个函数：`config.colorizeToken`、`config.colorizeCode`、`config.colorizeCommand`、`config.colorizeOutput`，它们分别对应于对单个 JavaScript Token 的高亮、对一段代码的 Token 解析与高亮、对输入命令的高亮以及对 JavaScript 输出结果的高亮。实际被 Fresh 调用的只有 `config.colorizeCommand` 和 `config.colorizeOutput` 两个函数。
+
+### 定制进程标题
+
+改变 `config.makeTitle` 函数可以定制 Fresh 的进程标题，用于显示在 GUI 终端中。该函数接受零个或一个参数，接受零个参数时，需要返回 Fresh 处于空闲状态时的进程标题；接受一个参数时，该参数是要执行的命令行程序的 argv 列表，需要返回 Fresh 执行该子程序时的默认进程标题。
 
 ## 建议与贡献
 

@@ -10,7 +10,7 @@ const setTitle = (title) => {
     );
 }
 
-setTitle('ƒ');
+setTitle(config.makeTitle());
 
 const exec = (interactive, command, ...interpolations) => {
     if (Array.isArray(command)) {
@@ -48,7 +48,7 @@ const exec = (interactive, command, ...interpolations) => {
     }
 
     try {
-        setTitle('ƒ > ' + cmd + (args.length ? '…' : ''));
+        setTitle(config.makeTitle(argv));
         process.stdin.setRawMode(false);
 
         // Use sh to execute the command
@@ -72,7 +72,7 @@ const exec = (interactive, command, ...interpolations) => {
         });
     } finally {
         process.stdin.setRawMode(true);
-        setTitle('ƒ');
+        setTitle(config.makeTitle());
     }
 };
 

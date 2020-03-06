@@ -14,6 +14,7 @@ const branch = require('list-git-branches');
 const pathComplete = require('lib-pathcomplete');
 
 const config = {
+    verb: 'ƒ',
     shell: '/bin/sh',
     shellArgs: ['--login'],
     env: [require],
@@ -63,13 +64,21 @@ const config = {
             }
         })
     },
+    makeTitle(argv) {
+        if (!argv) {
+            return config.verb;
+        } else {
+            const [cmd, ...args] = argv;
+            return config.verb + ' > ' + cmd + (args.length ? '…' : '')
+        }
+    },
     colorizeToken(token) {
         return {
             string: chalk.green,
             comment: chalk.gray,
             regex: chalk.cyan,
             number: chalk.yellow,
-            name: token.value === 'ƒ' ? chalk.blue : token.value === 'null' || token.value === 'undefined' ? chalk.gray : chalk.reset,
+            name: token.value === config.verb ? chalk.blue : token.value === 'null' || token.value === 'undefined' ? chalk.gray : chalk.reset,
             punctuator: chalk.reset,
             whitespace: chalk.reset,
             invalid: chalk.red
