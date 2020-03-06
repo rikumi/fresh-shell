@@ -6,7 +6,7 @@ const context = new Proxy(
     Object.assign(global, {
         require: Object.assign(require, importCwd),
         config,
-        ƒ: exec.bind(null, true),
+        ƒ: exec.bind(null, false),
     }),
     {
         get(target, key) {

@@ -23,7 +23,7 @@ const repl = new Repl({
     hardPrompt: config.prompt,
     softPrompt: 'ƒ`',
     transformer: (text) => {
-        if (/ƒ`([^`]|\\[.])+$/.test(text)) {
+        if (/ƒ`([^`\\]|\\[.])+$/.test(text)) {
             text += '`';
         }
         text = text.replace(/\\ /g, '\\\\ ');
@@ -31,7 +31,7 @@ const repl = new Repl({
     },
     formatter: config.colorizeCommand,
     executor: (cmd) => {
-        const isInteractive = /^ƒ`([^`]|\\[.])+`$/.test(cmd);
+        const isInteractive = /^ƒ`([^`\\]|\\[.])+`$/.test(cmd);
         sandbox.ƒ = exec.bind(null, isInteractive);
         try {
             let result = vm.runInContext(cmd, sandbox);

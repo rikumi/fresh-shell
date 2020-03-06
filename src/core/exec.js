@@ -2,6 +2,7 @@ const cp = require('child_process');
 const expand = require('expand-home-dir');
 const { parse } = require('shell-quote');
 const config = require('./config');
+const chalk = require('chalk').default;
 
 const setTitle = (title) => {
     process.stdout.write(
@@ -31,14 +32,19 @@ const exec = (interactive, command, ...interpolations) => {
     } else if (cmd === 'export' && args.length === 1) {
         const [key, value] = args[0].split('=');
         process.env[key] = value;
+        return '';
     }
 
     if (argv.includes('cd')) {
-        console.log('Warning: complex commands with `cd` will not affect the working directory of fresh shell. This can be a no-op. Use simple `cd <directory>` command instead.');
+        console.log(chalk.yellow('Warning: complex commands with `cd` will not affect the working directory of fresh shell. This can be a no-op. Use simple `cd <directory>` command instead.'));
     }
 
     if (argv.includes('export')) {
-        console.log('Warning: complex commands with `export` will not affect the environment variables of fresh shell. This can be a no-op. Use simple `export <key>=<value>` command instead.');
+        console.log(chalk.yellow('Warning: complex commands with `export` will not affect the environment variables of fresh shell. This can be a no-op. Use simple `export <key>=<value>` command instead.'));
+    }
+
+    if (argv.includes('exit')) {
+        console.log(chalk.yellow('Warning: complex commands with `exit` will not affect fresh shell. This can be a no-op. Use simple `exit` command instead.'));
     }
 
     try {
@@ -59,7 +65,7 @@ const exec = (interactive, command, ...interpolations) => {
             ]
         });
 
-        return Object.assign((stdout || '').toString(), {
+        return Object.assign((stdout || '').toString().replace(/\n$/, ''), {
             status,
             stderr: (stderr || '').toString(),
             error: error,

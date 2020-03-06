@@ -86,9 +86,8 @@ const config = {
         }
         return result;
     },
-    colorizeCommand(command, error, ended = true) {
-        return config.colorizeCode(command.trim()) +
-            (ended ? chalk.gray(' - ' + (error && error.stack.split(/\s*\n\s*/).slice(0, 2).join(' - ') || moment().format('H:mm:ss'))) : '');
+    colorizeCommand(command) {
+        return config.colorizeCode(command.trim()) + chalk.gray(' - ' + moment().format('H:mm:ss'));
     },
     colorizeOutput(output) {
         return config.colorizeCode(util.inspect(output));
