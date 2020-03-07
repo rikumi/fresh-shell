@@ -26,7 +26,8 @@ const repl = new Repl({
         if (new RegExp(config.verb + '`([^`\\\\]|\\\\.)+$').test(text)) {
             text += '`';
         }
-        text = text.replace(/\\ /g, '\\\\ ');
+        // Change non-JavaScript escapes to double escape to pass them on to the shell.
+        text = text.replace(/\\([^\\`bfnrt])/g, '\\\\$1');
         return text;
     },
     formatter: config.colorizeCommand,
