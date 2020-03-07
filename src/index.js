@@ -23,7 +23,7 @@ const repl = new Repl({
     hardPrompt: config.prompt,
     softPrompt: () => config.verb + '`',
     transformer: (text) => {
-        if (new RegExp(config.verb + '`([^`\\\\]|\\\\[.])+$').test(text)) {
+        if (new RegExp(config.verb + '`([^`\\\\]|\\\\.)+$').test(text)) {
             text += '`';
         }
         text = text.replace(/\\ /g, '\\\\ ');
@@ -31,7 +31,7 @@ const repl = new Repl({
     },
     formatter: config.colorizeCommand,
     executor: (cmd) => {
-        const isInteractive = new RegExp('^' + config.verb + '`([^`\\\\]|\\\\[.])+`$').test(cmd);
+        const isInteractive = new RegExp('^' + config.verb + '`([^`\\\\]|\\\\.)+`$').test(cmd);
         sandbox[config.verb] = exec.bind(null, isInteractive);
         try {
             let result = vm.runInContext(cmd, sandbox);
