@@ -66,10 +66,10 @@ module.exports = class Repl {
     async handleReturn(content) {
         const contentToClear = this.lastHardPrompt + content;
         this.clearLinesForText(contentToClear);
-        this.makeHardPrompt();
+        process.stdout.write(this.lastHardPrompt);
 
         if (!content.trim() || content.trim() === this.lastSoftPrompt.trim()) {
-            this.makeSoftPrompt();
+            process.stdout.write(this.lastSoftPrompt);
             return;
         }
 
@@ -83,8 +83,8 @@ module.exports = class Repl {
     }
 
     handleSIGINT() {
-        this.clearLines(100);
         this.interface.clearLine();
+        this.clearLines(100);
         this.makeBothPrompts();
     }
 }
