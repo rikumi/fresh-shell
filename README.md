@@ -51,17 +51,17 @@ Fresh 中必备的两个字符是 ƒ\`，我们可以称之为「软提示符」
 
 ![image](https://user-images.githubusercontent.com/5051300/76059992-302d0000-5fbb-11ea-8c11-99db4e89bcaa.png)
 
-## 环境变量与当前工作目录（CWD）
+## 内置指令
 
-Fresh 本身并不是 Unix Shell，而是 Unix Shell 的一层封装，所有的 Shell 命令都是在子进程中执行的。这也就意味着 Fresh 执行的 Shell 无法改变 Fresh 本身的环境变量与当前工作目录（CWD）。
+Fresh 本身并不是 Unix Shell，而是 Unix Shell 的一层封装，所有的 Shell 命令都是在子进程中执行的。这也就意味着 Fresh 执行的 Shell 无法改变 Fresh 本身的状态。而一部分状态是需要跨命令保持的，其中就包括**工作目录（CWD）**、**环境变量**以及**别名**
 
-这带来的几个最主要问题是 `cd`/`export`/`exit` 语句。如果我们用 Shell 模式执行这些语句，它们退出后不会对 Fresh 本身产生任何影响；因此，Fresh 简易实现了 `cd`/`export`/`exit` 语句的基本功能，让单一的 `cd`/`export`/`exit` 语句能够工作。
+如果我们用 Shell 模式执行 `cd`/`export`/`alias` 语句，它们退出后不会对 Fresh 本身产生任何影响；因此，Fresh 实现了 `cd`/`export`/`alias` **内置指令**，让单一的 `cd`/`export`/`alias` 语句能够工作。
 
-注意，Fresh 只支持在单一语句中独立使用 `cd <directory>`、`export KEY=value`、`exit` 的语法，其中 `cd` 和 `export` 支持在其中进行简单的环境变量插值；复杂的用法将会以 Unix Shell 模式执行，导致它们不会对 Fresh 本身的状态产生影响。以下是一个对比简单 `cd`/`export` 语句和复杂 `cd`/`export`/`exit` 语句的例子。
+注意，Fresh 只支持在单一语句中独立使用 `cd <directory>`、`export <KEY>=<value>`、`alias [<command>=<replacement>]` 的语法，并支持在其中进行简单的环境变量插值；复杂的用法将会以 Unix Shell 模式执行，导致它们不会对 Fresh 本身的状态产生影响。以下是一个对比简单 `cd`/`export` 语句和复杂 `cd`/`export` 语句的例子。
 
 ![image](https://user-images.githubusercontent.com/5051300/76062025-c3683480-5fbf-11ea-83c5-aa1d4e9e49e0.png)
 
-可以看到，简单的 `cd`/`export` 语句会被 Fresh 捕获，转换为改变当前工作目录和环境变量；复杂的 `cd`/`export`/`exit` 语句会采用 Shell 模式进行执行，因此不会对 Fresh 本身的状态产生影响。
+可以看到，简单的 `cd`/`export`/`alias` 语句会被 Fresh 捕获，产生的效果会对后面的指令生效；复杂的 `cd`/`export`/`alias` 语句会采用 Shell 模式进行执行，因此不会对 Fresh 本身以及后面的指令产生影响。
 
 ## Node.js 环境与自动 require
 
@@ -81,15 +81,13 @@ Fresh 的本质是一个 Node.js REPL（但并没有使用 Node.js REPL 库，�
 
 Fresh 支持使用配置文件进行自定义，实现嵌套 Shell 和配置继承、提示符美化（如实现简易的 Powerline 风格）、定制 JavaScript 环境、定制 Tab 自动完成、定制颜色高亮等。
 
-配置文件位于 `~/.freshrc.js`，会在 Fresh 启动时被执行。在配置文件中，可以像在 Fresh 内一样使用 ƒ 函数，但固定处于隐藏执行模式，如果要查看输出，需要配合 `console.log` 等方式。
-
-配置文件中可以对全局配置对象 `config` 进行修改。预设的 config 对象参见[这里](https://github.com/rikumi/fresh-shell/blob/master/src/core/config.js)。
+配置文件位于 `~/.freshrc.js`，会在 Fresh 启动时被执行。配置文件中可以对全局配置对象 `config` 进行修改。预设的 config 对象参见[这里](https://github.com/rikumi/fresh-shell/blob/master/src/core/config.js)。
 
 ### 定制动词
 
 修改 `config.verb`，可以将默认的动词 ƒ 修改成其他**合法的 JavaScript 标识符**。
 
-### 嵌套 Shell 与配置继承
+### 嵌套 Shell 与执行前指令
 
 Fresh 可以使用 Bash、Zsh、Fish、Xonsh 等任何支持 `-c` 参数的第三方 Shell 作为内嵌 Shell 工具，只需在配置文件中更改 `config.shell` 即可：
 
@@ -97,9 +95,17 @@ Fresh 可以使用 Bash、Zsh、Fish、Xonsh 等任何支持 `-c` 参数的第�
 config.shell = '/bin/zsh';
 ```
 
-Fresh 尽可能保持原有 Shell 的使用体验，因此，被嵌套的 Shell 默认以 `-li`（Login + Interactive）方式执行，以便于加载它们的用户配置，例如环境变量等。因此，使用 Fresh 后，你仍然可以通过修改原有 Shell 的配置文件来影响它们在 Fresh 中的行为。
+被嵌套的 Shell 默认以 `--login`（Login + Interactive）方式执行，在该模式下，Shell 将会加载更多的默认环境变量，但不会自动加载配置文件。
 
-如要修改被嵌套的 Shell 的附加执行参数（默认为 `['-li']`），可以在配置文件中操作 `config.shellArgs`。注意，`-c` 将会自动添加。
+如要修改被嵌套的 Shell 的附加执行参数（默认为 `['--login']`），可以在配置文件中操作 `config.shellArgs`。注意，`-c` 将会自动添加；
+
+如需加载 `.bashrc`/`.zshrc` 等配置文件（不推荐），可以在 `config.shellCommandPrefix` 中设置需要添加到每次 Shell 被执行字符串之前的指令，例如 `config.shellCommandPrefix = 'source ~/.bashrc;'`，注意不要忘了以分号结尾。
+
+### 配置文件中执行 Shell 语句
+
+在配置文件中，可以像在 Fresh 内一样使用 ƒ 函数，但固定处于隐藏执行模式，如果要查看输出，需要配合 `console.log` 等方式。
+
+请注意对 `config.shell` 的修改与执行 Shell 语句之间的先后顺序。
 
 ### 定制提示符（以 Powerline 风格为例）
 
