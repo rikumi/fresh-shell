@@ -84,7 +84,7 @@ module.exports = class Repl {
 
     handleSIGINT() {
         this.interface.clearLine();
-        this.clearLines(100);
+        this.clearLines(process.stdout.rows);
         this.makeBothPrompts();
     }
 }
