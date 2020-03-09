@@ -45,31 +45,39 @@ module.exports = class Repl {
         this.clearLines(this.getLineCountFromText(text));
     }
 
-    makeHardPrompt(newPrompt = this.hardPrompt) {
-        const prompt = typeof this.hardPrompt === 'function' ? this.hardPrompt() : this.hardPrompt;
-        this.lastHardPrompt = prompt;
-        this.interface.setPrompt(prompt);
-        this.interface.prompt();
+    makeHardPrompt(cached = false) {
+        if (cached) {
+            process.stdout.write(this.lastHardPrompt);
+        } else {
+            const prompt = typeof this.hardPrompt === 'function' ? this.hardPrompt() : this.hardPrompt;
+            this.lastHardPrompt = prompt;
+            this.interface.setPrompt(prompt);
+            this.interface.prompt();
+        }
     }
 
-    makeSoftPrompt(newPrompt = this.softPrompt) {
-        const prompt = typeof this.softPrompt === 'function' ? this.softPrompt() : this.softPrompt;
-        this.lastSoftPrompt = prompt;
-        this.interface.write(prompt);
+    makeSoftPrompt(cached = false) {
+        if (cached) {
+            this.interface.write(this.lastSoftPrompt);
+        } else {
+            const prompt = typeof this.softPrompt === 'function' ? this.softPrompt() : this.softPrompt;
+            this.lastSoftPrompt = prompt;
+            this.interface.write(prompt);
+        }
     }
 
-    makeBothPrompts(newHardPrompt = this.hardPrompt, newSoftPrompt = this.softPrompt) {
-        this.makeHardPrompt(newHardPrompt);
-        this.makeSoftPrompt(newSoftPrompt);
+    makeBothPrompts(cached = false) {
+        this.makeHardPrompt(cached);
+        this.makeSoftPrompt(cached);
     }
 
     async handleReturn(content) {
         const contentToClear = this.lastHardPrompt + content;
         this.clearLinesForText(contentToClear);
-        this.makeHardPrompt();
+        this.makeHardPrompt(true);
 
         if (!content.trim() || content.trim() === this.lastSoftPrompt.trim()) {
-            this.makeSoftPrompt();
+            this.makeSoftPrompt(true);
             return;
         }
 
@@ -83,8 +91,8 @@ module.exports = class Repl {
     }
 
     handleSIGINT() {
-        this.clearLines(100);
         this.interface.clearLine();
-        this.makeBothPrompts();
+        this.clearLines(process.stdout.rows);
+        this.makeBothPrompts(true);
     }
 }
