@@ -5,9 +5,9 @@ const os = require('os');
 const path = require('path');
 
 const Repl = require('./core/repl');
-const exec = require('./core/exec');
 const config = require('./core/config');
 const context = require('./core/context');
+const { exec, setTitle } = require('./core/exec');
 
 const sandbox = vm.createContext(context);
 
@@ -18,6 +18,8 @@ process.on('SIGINT', () => {});
 try {
     vm.runInContext(fs.readFileSync(path.join(os.homedir(), '.freshrc.js')).toString(), context);
 } catch (e) { }
+
+setTitle(config.makeTitle());
 
 const repl = new Repl({
     hardPrompt: config.prompt,

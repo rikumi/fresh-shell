@@ -1,6 +1,6 @@
 const importCwd = require('import-cwd');
 const config = require('./config');
-const exec = require('./exec');
+const { exec } = require('./exec');
 
 const context = new Proxy(
     Object.assign(global, {

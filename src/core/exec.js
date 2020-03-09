@@ -10,8 +10,6 @@ const setTitle = (title) => {
     );
 }
 
-setTitle(config.makeTitle());
-
 const exec = (interactive, command, ...interpolations) => {
     if (Array.isArray(command)) {
         command = command.map((k, i) => k + (interpolations[i] || '')).join('');
@@ -76,4 +74,7 @@ const exec = (interactive, command, ...interpolations) => {
     }
 };
 
-module.exports = exec;
+module.exports = {
+    setTitle,
+    exec
+};
