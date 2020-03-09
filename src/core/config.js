@@ -16,7 +16,7 @@ const pathComplete = require('lib-pathcomplete');
 const config = {
     verb: 'ƒ',
     shell: '/bin/sh',
-    shellArgs: ['--login'],
+    shellArgs: ['-li'],
     env: [require],
     git() {
         let cwd = process.cwd();

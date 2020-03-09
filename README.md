@@ -97,9 +97,9 @@ Fresh 可以使用 Bash、Zsh、Fish、Xonsh 等任何支持 `-c` 参数的第�
 config.shell = '/bin/zsh';
 ```
 
-Fresh 尽可能保持原有 Shell 的使用体验，因此，被嵌套的 Shell 默认以 `--login` 方式执行，以便于加载它们的用户配置，例如环境变量等。因此，使用 Fresh 后，你仍然可以通过修改原有 Shell 的配置文件来影响它们在 Fresh 中的行为。
+Fresh 尽可能保持原有 Shell 的使用体验，因此，被嵌套的 Shell 默认以 `-li`（Login + Interactive）方式执行，以便于加载它们的用户配置，例如环境变量等。因此，使用 Fresh 后，你仍然可以通过修改原有 Shell 的配置文件来影响它们在 Fresh 中的行为。
 
-如要修改被嵌套的 Shell 的执行参数（默认为 `['--login']`），可以在配置文件中操作 `config.shellArgs`。
+如要修改被嵌套的 Shell 的附加执行参数（默认为 `['-li']`），可以在配置文件中操作 `config.shellArgs`。注意，`-c` 将会自动添加。
 
 ### 定制提示符（以 Powerline 风格为例）
 
