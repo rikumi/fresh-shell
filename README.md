@@ -87,7 +87,7 @@ Fresh 支持使用配置文件进行自定义，实现嵌套 Shell 和配置继�
 
 修改 `config.verb`，可以将默认的动词 ƒ 修改成其他**合法的 JavaScript 标识符**。
 
-![image](https://user-images.githubusercontent.com/5051300/76219070-32f45300-6250-11ea-9868-57ed08871464.png)
+![image](https://user-images.githubusercontent.com/5051300/76219201-6c2cc300-6250-11ea-846e-25f8f9adbe91.png)
 
 ### 嵌套 Shell 与执行前指令
 
