@@ -1,4 +1,4 @@
-#!/usr/local/bin/node
+#!/usr/bin/env node
 const vm = require('vm');
 const fs = require('fs');
 const os = require('os');
@@ -28,8 +28,6 @@ const repl = new Repl({
         if (new RegExp(config.verb + '`([^`\\\\]|\\\\.)+$').test(text)) {
             text += '`';
         }
-        // Change non-JavaScript escapes to double escape to pass them on to the shell.
-        text = text.replace(/\\([^\\`bfnrt])/g, '\\\\$1');
         return text;
     },
     formatter: config.colorizeCommand,

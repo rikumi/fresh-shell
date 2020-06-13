@@ -11,6 +11,8 @@ const setTitle = (title) => {
 }
 
 const exec = (interactive, command, ...interpolations) => {
+    command = command.raw;
+
     if (Array.isArray(command)) {
         command = command.map((k, i) => k + (interpolations[i] || '')).join('');
     }
