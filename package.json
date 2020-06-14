@@ -1,6 +1,6 @@
 {
   "name": "fresh-shell",
-  "version": "3.1.12",
+  "version": "3.2.0",
   "description": "The fully customizable JavaScript shell, for everyday use.",
   "main": "index.js",
   "bin": {
@@ -15,6 +15,7 @@
     "expand-home-dir": "^0.0.3",
     "git-state": "^4.1.0",
     "glob": "^7.1.6",
+    "historic-readline": "^1.0.8",
     "import-cwd": "^2.1.0",
     "js-tokens": "^4.0.0",
     "lib-pathcomplete": "^0.0.1",

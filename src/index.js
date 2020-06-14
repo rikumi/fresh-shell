@@ -47,6 +47,6 @@ const repl = new Repl({
         process.stdout.write('\n');
     }
 }, {
-    removeHistoryDuplicates: true,
+    maxLength: config.historySize,
     completer: config.complete
 });

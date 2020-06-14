@@ -1,4 +1,6 @@
-const readline = require('readline');
+const os = require('os');
+const path = require('path');
+const readline = require('historic-readline');
 const stringWidth = require('string-width');
 
 const noop = k => k;
@@ -16,15 +18,18 @@ module.exports = class Repl {
 
         Object.assign(this, options);
 
-        this.interface = readline.createInterface({
+        readline.createInterface({
             input: process.stdin,
             output: process.stdout,
-            ...readlineOptions
+            path: path.join(os.homedir(), '.fresh_history'),
+            ...readlineOptions,
+            next: (rl) => {
+                this.interface = rl;
+                this.interface.on('line', (content) => this.handleReturn(content));
+                this.interface.on('SIGINT', () => this.handleSIGINT());
+                this.makeBothPrompts();
+            }
         });
-
-        this.interface.on('line', (content) => this.handleReturn(content));
-        this.interface.on('SIGINT', () => this.handleSIGINT());
-        this.makeBothPrompts();
     }
 
     getLineCountFromText(text) {

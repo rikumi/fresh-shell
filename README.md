@@ -144,6 +144,10 @@ config.prompt = (status = 0) => {
 
 Fresh 默认配置中提供了路径自动完成和 Git 分支自动完成；你还可以修改 `config.complete` 函数来完善这一特性。自动完成函数的写法参见 [Readline 文档](https://nodejs.org/api/readline.html#readline_use_of_the_completer_function)。
 
+### 定制 history 长度
+
+键入过的最近 100 条语句会保存在 ~/.fresh_history 文件中，可以修改 `config.historySize` 来改变这个数字。
+
 ### 定制语法高亮
 
 为了方便自定义，默认配置对象中将语法高亮分为四个函数：`config.colorizeToken`、`config.colorizeCode`、`config.colorizeCommand`、`config.colorizeOutput`，它们分别对应于对单个 JavaScript Token 的高亮、对一段代码的 Token 解析与高亮、对输入命令的高亮以及对 JavaScript 输出结果的高亮。实际被 Fresh 调用的只有 `config.colorizeCommand` 和 `config.colorizeOutput` 两个函数。

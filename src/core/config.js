@@ -13,6 +13,7 @@ const git = require('git-state');
 const branch = require('list-git-branches');
 const pathComplete = require('lib-pathcomplete');
 
+// Change the options below by modifying the `config` global variable in ~/.freshrc.js.
 const config = {
     verb: 'ƒ',
     shell: '/bin/sh',
@@ -20,6 +21,7 @@ const config = {
     shellCommandPrefix: '',
     env: [require],
     alias: {},
+    historySize: 100,
     git() {
         let cwd = process.cwd();
         if (!git.isGitSync(cwd)) return '';
