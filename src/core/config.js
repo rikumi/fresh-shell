@@ -17,7 +17,7 @@ const pathComplete = require('lib-pathcomplete');
 const config = {
     verb: 'ƒ',
     shell: '/bin/sh',
-    shellArgs: ['--login'],
+    shellArgs: ['-l'], // dash (default shell in Debian/Ubuntu) is not compatible with --login
     shellCommandPrefix: '',
     env: [require],
     alias: {},
