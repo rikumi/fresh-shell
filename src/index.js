@@ -1,4 +1,4 @@
-#!/usr/local/bin/node
+#!/usr/bin/env node
 const vm = require('vm');
 const fs = require('fs');
 const os = require('os');
